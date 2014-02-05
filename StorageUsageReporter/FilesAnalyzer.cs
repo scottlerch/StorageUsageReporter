@@ -8,18 +8,21 @@ using Path = Alphaleonis.Win32.Filesystem.Path;
 
 namespace StorageUsageReporter
 {
+    /// <summary>
+    /// Process storage location and generate file metadata and basic statistics.
+    /// </summary>
     internal class FilesAnalyzer
     {
         public long TotalSize { get; set; }
 
         public long TotalNumber { get; set; }
 
-        public IEnumerable<FileMetadata> ProcessPath(string path, bool sanitize, bool rollup)
+        public IEnumerable<FileMetadata> ProcessPath(IEnumerable<string> paths, bool sanitize, bool rollup)
         {
             return CollectStatistics(
                 rollup ? 
-                    GetMetadataRollup(path, sanitize) : 
-                    GetMetadataFlat(path, sanitize));
+                    paths.SelectMany(path => GetMetadataRollup(path, sanitize)) : 
+                    paths.SelectMany(path => GetMetadataFlat(path, sanitize)));
         }
 
         private IEnumerable<FileMetadata> CollectStatistics(IEnumerable<FileMetadata> fileMetadata)

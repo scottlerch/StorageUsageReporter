@@ -2,6 +2,9 @@
 
 namespace StorageUsageReporter
 {
+    /// <summary>
+    /// Helper extension methods to format strings, like convert bytes to appropriately sized units i.e. KB, MB, etc.
+    /// </summary>
     internal static class FormatExtensions
     {
         private static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };

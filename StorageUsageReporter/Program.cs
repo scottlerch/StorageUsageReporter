@@ -3,14 +3,15 @@ using CommandLine;
 using CommandLine.Text;
 using ServiceStack.Text;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace StorageUsageReporter
 {
     internal class Options
     {
-        [Option('p', "path", Required = true, HelpText = "Path to perform recursive analysis.")]
-        public string SourcePath { get; set; }
+        [OptionArray('p', "paths", Required = true, HelpText = "Paths to perform recursive analysis.")]
+        public string[] SourcePaths { get; set; }
 
         [Option('o', "output", Required = false, DefaultValue = "output.csv", HelpText = "Output file to store analysis.")]
         public string OutputPath { get; set; }
@@ -34,7 +35,7 @@ namespace StorageUsageReporter
         {
             var options = new Options();
 
-            if (!Parser.Default.ParseArguments(args, options)) return;
+            if (!Parser.Default.ParseArguments(args, options)) Environment.Exit(-1);
 
             var stopwatch = Stopwatch.StartNew();
 
@@ -42,7 +43,7 @@ namespace StorageUsageReporter
             Console.WriteLine("Starting at {0}...", DateTime.Now);
 
             var analyzer = new FilesAnalyzer();
-            var metadata = analyzer.ProcessPath(options.SourcePath, options.Sanitize, options.Rollup);
+            var metadata = analyzer.ProcessPath(options.SourcePaths, options.Sanitize, options.Rollup);
 
             using (var file = File.Create(options.OutputPath))
             {
@@ -52,7 +53,7 @@ namespace StorageUsageReporter
             Console.WriteLine("Completed in {0}! ", stopwatch.Elapsed);
 
             Console.WriteLine();
-            Console.WriteLine("Location analyzed: {0}", options.SourcePath);
+            Console.WriteLine("Locations analyzed: {0}", string.Join(";", options.SourcePaths));
             Console.WriteLine("Detailed output: {0}", options.OutputPath);
 
             Console.WriteLine();
