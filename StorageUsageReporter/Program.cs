@@ -25,7 +25,11 @@ namespace StorageUsageReporter
         [HelpOption]
         public string GetUsage()
         {
-            return HelpText.AutoBuild(this, current => HelpText.DefaultParsingErrorsHandler(this, current));
+            return 
+                Environment.NewLine +
+                HelpText.AutoBuild(this, current => HelpText.DefaultParsingErrorsHandler(this, current)) + 
+                @"For more information visit https://github.com/scottlerch/StorageUsageReporter" + 
+                Environment.NewLine;
         }
     }
 
