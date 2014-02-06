@@ -16,5 +16,10 @@ namespace StorageUsageReporter
 
             return string.Format("{0:n1} {1}", adjustedSize, SizeSuffixes[mag]);
         }
+
+        public static string ToHashedText(this string value)
+        {
+            return ((uint)value.GetHashCode()).ToString("X");
+        }
     }
 }

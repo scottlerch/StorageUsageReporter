@@ -8,6 +8,8 @@ namespace StorageUsageReporter
 
         public string FileName { get; set; }
 
+        public string FileExtension { get; set; }
+
         public long FileSize { get; set; }
 
         public DateTime CreationTimeUtc { get; set; }

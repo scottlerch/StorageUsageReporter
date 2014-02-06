@@ -38,18 +38,15 @@ namespace StorageUsageReporter
 
         private IEnumerable<FileMetadata> GetMetadataFlat(string path, bool sanitize)
         {
-            var santizedDirectoryName = new ConcurrentDictionary<string, string>();
-
             return
                 from info in Directory.EnumerateFileSystemInfos(path, "*", SearchOption.AllDirectories, continueOnAccessError: true)
                 where info.SystemInfo.IsFile
                 let directoryName = Path.GetDirectoryName(info.FullName)
                 select new FileMetadata
                 {
-                    FileName = sanitize ? Path.GetRandomFileName() : info.Name,
-                    DirectoryPath = sanitize ?
-                        santizedDirectoryName.GetOrAdd(directoryName, fullName => Guid.NewGuid().ToString()) :
-                        directoryName,
+                    FileName = sanitize ? info.Name.ToHashedText() : info.Name,
+                    FileExtension = Path.GetExtension(info.Name).TrimStart('.'),
+                    DirectoryPath = sanitize ? directoryName.ToHashedText() : directoryName,
                     FileSize = info.SystemInfo.FileSize,
                     CreationTimeUtc = info.CreationTimeUtc,
                     LastWriteTimeUtc = info.LastWriteTimeUtc,
@@ -71,7 +68,10 @@ namespace StorageUsageReporter
                     .Aggregate(new FileMetadata
                         {
                             FileName = string.Empty,
-                            DirectoryPath = sanitize ? Guid.NewGuid().ToString() : Path.GetDirectoryName(initialFile.FullName),
+                            FileExtension = string.Empty,
+                            DirectoryPath = sanitize ? 
+                                Path.GetDirectoryName(initialFile.FullName).ToHashedText() : 
+                                Path.GetDirectoryName(initialFile.FullName),
                             FileSize = 0,
                             CreationTimeUtc = DateTime.MinValue,
                             LastWriteTimeUtc = DateTime.MinValue,
@@ -80,6 +80,7 @@ namespace StorageUsageReporter
                         (info, file) => new FileMetadata
                         {
                             FileName = info.FileName,
+                            FileExtension = info.FileExtension,
                             DirectoryPath = info.DirectoryPath,
                             FileSize = info.FileSize + file.SystemInfo.FileSize,
                             CreationTimeUtc =
