@@ -37,7 +37,10 @@ namespace StorageUsageReporter
             Console.WriteLine("Detailed output: {0}", options.OutputPath);
 
             Console.WriteLine();
-            Console.WriteLine("Number: {0}  Size: {1}", analyzer.TotalNumber, analyzer.TotalSize.ToPrettySize());
+            Console.WriteLine("Items Count  : {0}", analyzer.TotalNumber);
+            Console.WriteLine("Total Size   : {0}", analyzer.TotalSize.ToPrettySize());
+            Console.WriteLine("Average Size : {0}", analyzer.AverageSize.ToPrettySize());
+            Console.WriteLine("Median Size  : {0}", analyzer.MedianSize.ToPrettySize());
         }
 
         private static bool ValidateArguments(Options options)

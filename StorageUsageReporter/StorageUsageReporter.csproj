@@ -58,6 +58,9 @@
     <Reference Include="CommandLine">
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net40\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="PowerCollections">
+      <HintPath>..\packages\XAct.Wintellect.PowerCollections.0.0.1\lib\net20\PowerCollections.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Text">
       <HintPath>..\packages\ServiceStack.Text.4.0.9\lib\net40\ServiceStack.Text.dll</HintPath>
     </Reference>
@@ -96,7 +99,7 @@
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>
     <PostBuildEvent>if not exist "$(SolutionDir)bin" mkdir "$(SolutionDir)bin"
-"$(SolutionDir)packages\ILRepack.1.24.0\tools\ILRepack.exe" /out:"$(SolutionDir)bin\$(TargetName)$(TargetExt)" "$(TargetPath)" "$(TargetDir)AlphaFS.dll" "$(TargetDir)CommandLine.dll" "$(TargetDir)ServiceStack.Text.dll"
+"$(SolutionDir)packages\ILRepack.1.24.0\tools\ILRepack.exe" /out:"$(SolutionDir)bin\$(TargetName)$(TargetExt)" "$(TargetPath)" "$(TargetDir)AlphaFS.dll" "$(TargetDir)CommandLine.dll" "$(TargetDir)ServiceStack.Text.dll" "$(TargetDir)PowerCollections.dll"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

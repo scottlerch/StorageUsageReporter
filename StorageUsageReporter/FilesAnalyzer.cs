@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Wintellect.PowerCollections;
 using Directory = Alphaleonis.Win32.Filesystem.Directory;
 using Path = Alphaleonis.Win32.Filesystem.Path;
 
@@ -17,6 +17,10 @@ namespace StorageUsageReporter
 
         public long TotalNumber { get; set; }
 
+        public long AverageSize { get; set; }
+
+        public long MedianSize { get; set; }
+
         public IEnumerable<FileMetadata> ProcessPath(IEnumerable<string> paths, bool sanitize, bool rollup)
         {
             return CollectStatistics(
@@ -27,13 +31,20 @@ namespace StorageUsageReporter
 
         private IEnumerable<FileMetadata> CollectStatistics(IEnumerable<FileMetadata> fileMetadata)
         {
+            var fileSizes = new OrderedBag<long>();
+
             foreach (var info in fileMetadata)
             {
                 TotalSize += info.FileSize;
                 TotalNumber++;
 
+                fileSizes.Add(info.FileSize);
+
                 yield return info;
             }
+
+            AverageSize = TotalSize / TotalNumber;
+            MedianSize = fileSizes[fileSizes.Count/2];
         }
 
         private IEnumerable<FileMetadata> GetMetadataFlat(string path, bool sanitize)
