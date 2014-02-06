@@ -95,3 +95,14 @@ Sample output.csv file with sanitized names:
     8C8B45E0,FFE0EF6A,ini,504,2013-08-25T03:49:49.9593375Z,2013-08-25T03:49:49.9593375Z,2013-11-18T03:37:37.1705881Z
 
 
+Acknowledgements
+----------------
+
+AlphaFS - Peter Palotas:  
+http://alphafs.codeplex.com/
+
+Command Line Parser - Giacomo Stelluti Scala:  
+https://github.com/gsscoder/commandline
+
+ILRepack - Francois Valdy:  
+https://github.com/gluck/il-repack
