@@ -16,7 +16,7 @@ Get help:
 	
 	  -o, --output      (Default: output.csv) Output file to store analysis.
 	
-	  -s, --sanitize    (Default: False) Randomize identifiable names.
+	  -s, --sanitize    (Default: False) Hash identifiable names.
 	
 	  -r, --rollup      (Default: False) Rollup metadata to directory level.
 	
@@ -26,49 +26,61 @@ Local drive:
 
 	> StorageUsageReporter.exe -p C:\
 	
-	Starting at 2/4/2014 11:15:14 PM...
-	Completed in 00:00:30.8677660!
+	Starting at 2/6/2014 6:54:26 PM...
+	Completed in 00:00:50.9157842!
 	
-	Location analyzed: C:\
+	Locations analyzed: C:\
 	Detailed output: output.csv
 	
-	Number: 492885  Size: 137.9 GB
+	Items Count  : 493953
+	Total Size   : 140.6 GB
+	Average Size : 298.4 KB
+	Median Size  : 5.9 KB
 
 Local drive with rollup:
 
 	> StorageUsageReporter.exe -p C:\ -r
 	
-	Starting at 2/4/2014 11:12:40 PM...
-	Completed in 00:01:20.2719613!
+	Starting at 2/6/2014 6:55:52 PM...
+	Completed in 00:01:09.8247372!
 	
-	Location analyzed: C:\
+	Locations analyzed: C:\
 	Detailed output: output.csv
 	
-	Number: 64029  Size: 137.8 GB
+	Items Count  : 64386
+	Total Size   : 140.5 GB
+	Average Size : 2.2 MB
+	Median Size  : 26.4 KB
 
 File share:
 
 	> StorageUsageReporter.exe -path \\filesrv1\Documents
-
-	Starting at 2/4/2014 11:08:28 PM...
-	Completed in 00:00:09.8168705!
-
-	Location analyzed: \\filesrv1\Documents
+	
+	Starting at 2/6/2014 6:58:30 PM...
+	Completed in 00:00:10.8205564!
+	
+	Locations analyzed: \\127.0.0.1\Users\Scott\Documents
 	Detailed output: output.csv
-
-	Number: 71671  Size: 8.4 GB
+	
+	Items Count  : 71772
+	Total Size   : 8.4 GB
+	Average Size : 122.9 KB
+	Median Size  : 4.3 KB
 
 File shares with sanitized output:
 
 	> StorageUsageReporter.exe -p \\filesrv1\Documents \\filesrv1\Pictures -s
-
-	Starting at 2/4/2014 11:11:07 PM...
-	Completed in 00:00:09.9287875!
-
-	Location analyzed: \\filesrv1\Documents;\\filesrv1\Pictures
+	
+	Starting at 2/6/2014 6:59:10 PM...
+	Completed in 00:00:10.9154797!
+	
+	Locations analyzed: \\127.0.0.1\Users\Scott\Documents;\\127.0.0.1\Users\Scott\Pictures
 	Detailed output: output.csv
-
-	Number: 76739  Size: 18.5 GB
+	
+	Items Count  : 76841
+	Total Size   : 18.5 GB
+	Average Size : 252.6 KB
+	Median Size  : 4.8 KB
 
 Sample Output
 -------------
@@ -106,3 +118,6 @@ https://github.com/gsscoder/commandline
 
 ILRepack - Francois Valdy:  
 https://github.com/gluck/il-repack
+
+PowerCollection - Wintellect  
+http://powercollections.codeplex.com/
