@@ -59,7 +59,7 @@ File share:
 	Starting at 2/6/2014 6:58:30 PM...
 	Completed in 00:00:10.8205564!
 	
-	Locations analyzed: \\127.0.0.1\Users\Scott\Documents
+	Locations analyzed: \\filesrv1\Documents
 	Detailed output: output.csv
 	
 	Items Count  : 71772
@@ -74,7 +74,7 @@ File shares with sanitized output:
 	Starting at 2/6/2014 6:59:10 PM...
 	Completed in 00:00:10.9154797!
 	
-	Locations analyzed: \\127.0.0.1\Users\Scott\Documents;\\127.0.0.1\Users\Scott\Pictures
+	Locations analyzed: \\filesrv1\Documents;\\filesrv1\Pictures
 	Detailed output: output.csv
 	
 	Items Count  : 76841
