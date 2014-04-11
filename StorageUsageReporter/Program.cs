@@ -23,7 +23,7 @@ namespace StorageUsageReporter
             Console.WriteLine("Starting at {0}...", DateTime.Now);
 
             var analyzer = new FilesAnalyzer();
-            var metadata = analyzer.ProcessPath(options.SourcePaths, options.Sanitize, options.Rollup);
+            var metadata = analyzer.ProcessPath(options.SourcePaths, options.Sanitize, options.Rollup, options.RollupRecursive);
 
             using (var file = File.Create(options.OutputPath))
             {

@@ -22,6 +22,9 @@ namespace StorageUsageReporter
         [Option('r', "rollup", Required = false, DefaultValue = false, HelpText = "Rollup metadata to directory level.")]
         public bool Rollup { get; set; }
 
+        [Option('c', "recursiveRollup", Required = false, DefaultValue = false, HelpText = "Rollup metadata to directory level recursively.")]
+        public bool RollupRecursive { get; set; }
+
         [HelpOption]
         public string GetUsage()
         {

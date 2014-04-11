@@ -21,12 +21,14 @@ namespace StorageUsageReporter
 
         public long MedianSize { get; set; }
 
-        public IEnumerable<FileMetadata> ProcessPath(IEnumerable<string> paths, bool sanitize, bool rollup)
+        public IEnumerable<FileMetadata> ProcessPath(IEnumerable<string> paths, bool sanitize, bool rollup, bool rollupRecursive)
         {
             return CollectStatistics(
-                rollup ? 
-                    paths.SelectMany(path => GetMetadataRollup(path, sanitize)) : 
-                    paths.SelectMany(path => GetMetadataFlat(path, sanitize)));
+                rollupRecursive?
+                    paths.SelectMany(path => GetMetadataRollupRecursive(path, sanitize)) :
+                    rollup ? 
+                        paths.SelectMany(path => GetMetadataRollup(path, sanitize)) : 
+                        paths.SelectMany(path => GetMetadataFlat(path, sanitize)));
         }
 
         private IEnumerable<FileMetadata> CollectStatistics(IEnumerable<FileMetadata> fileMetadata)
@@ -118,6 +120,99 @@ namespace StorageUsageReporter
                     yield return rollup;
                 }
             }
+        }
+
+        private class FileMetaDataNode
+        {
+            public FileMetadata FileMetadata { get; set; }
+
+            public Dictionary<string, FileMetaDataNode> Children { get; private set; }
+
+            public FileMetaDataNode()
+            {
+                Children = new Dictionary<string, FileMetaDataNode>();
+            }
+        }
+
+        private static readonly string[] Separator = {"\\"};
+
+        private IEnumerable<FileMetadata> GetMetadataRollupRecursive(string path, bool sanitize)
+        {
+            var directoryRollups = GetMetadataRollup(path, sanitize).ToList();
+
+            // Build tree so we can efficiently roll-up recursively in O(n log n) time
+            var root = new FileMetaDataNode();
+
+            foreach (var directoryRollup in directoryRollups)
+            {
+                var current = root;
+                var parts = directoryRollup.DirectoryPath.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var part in parts)
+                {
+                    FileMetaDataNode node;
+                    if (current.Children.TryGetValue(part, out node))
+                    {
+                        current = node;
+                    }
+                    else
+                    {
+                        var temp = new FileMetaDataNode();
+                        current.Children.Add(part, temp);
+                        current = temp;
+                    }
+                }
+
+                current.FileMetadata = directoryRollup;
+            }
+
+            // Aggregate recursively at each level in-place
+            AggregateMetaDataNodes(root);
+
+            return directoryRollups;
+        }
+
+        private FileMetadata AggregateMetaDataNodes(FileMetaDataNode node)
+        {
+            if (node.FileMetadata == null)
+            {
+                node.FileMetadata = new FileMetadata
+                {
+                    FileName = string.Empty,
+                    FileExtension = string.Empty,
+                    DirectoryPath = string.Empty,
+                    FileSize = 0,
+                    CreationTimeUtc = DateTime.MinValue,
+                    LastWriteTimeUtc = DateTime.MinValue,
+                    LastAccessTimeUtc = DateTime.MinValue,
+                };
+            }
+
+            if (node.Children.Count == 0)
+            {
+                return node.FileMetadata;
+            }
+
+            foreach (var child in node.Children.Values)
+            {
+                var fileMetaData = AggregateMetaDataNodes(child);
+
+                node.FileMetadata.FileSize += fileMetaData.FileSize;
+                node.FileMetadata.CreationTimeUtc =
+                    node.FileMetadata.CreationTimeUtc > fileMetaData.CreationTimeUtc
+                        ? node.FileMetadata.CreationTimeUtc
+                        : fileMetaData.CreationTimeUtc;
+                node.FileMetadata.LastWriteTimeUtc =
+                    node.FileMetadata.LastWriteTimeUtc > fileMetaData.LastWriteTimeUtc
+                        ? node.FileMetadata.LastWriteTimeUtc
+                        : fileMetaData.LastWriteTimeUtc;
+                node.FileMetadata.LastAccessTimeUtc =
+                    node.FileMetadata.LastAccessTimeUtc > fileMetaData.LastAccessTimeUtc
+                        ? node.FileMetadata.LastAccessTimeUtc
+                        : fileMetaData.LastAccessTimeUtc;
+            }
+
+            return node.FileMetadata;
         }
     }
 }

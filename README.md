@@ -12,15 +12,18 @@ Get help:
 	StorageUsageReporter 1.0.0.0
 	Copyright Scott Lerch 2014
 	
-	  -p, --paths       Required. Paths to perform recursive analysis.
+	  -p, --paths              Required. Paths to perform recursive analysis.
 	
-	  -o, --output      (Default: output.csv) Output file to store analysis.
+	  -o, --output             (Default: output.csv) Output file to store analysis.
 	
-	  -s, --sanitize    (Default: False) Hash identifiable names.
+	  -s, --sanitize           (Default: False) Hash identifiable names.
 	
-	  -r, --rollup      (Default: False) Rollup metadata to directory level.
+	  -r, --rollup             (Default: False) Rollup metadata to directory level.
 	
-	  --help            Display this help screen.
+	  -c, --recursiveRollup    (Default: False) Rollup metadata to directory level
+                               recursively.
+	
+	  --help                   Display this help screen.
 	  
 Local drive:
 
