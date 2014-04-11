@@ -109,6 +109,11 @@ Sample output.csv file with sanitized names:
     8C8B45E0,57987C48,m4v,260902030,2013-08-25T23:28:03.9472248Z,2013-08-25T23:28:03.9472248Z,2011-02-21T02:55:08Z
     8C8B45E0,FFE0EF6A,ini,504,2013-08-25T03:49:49.9593375Z,2013-08-25T03:49:49.9593375Z,2013-11-18T03:37:37.1705881Z
 
+Known Issues
+------------
+
+ * When using recursive roll-up the statistics are nonsensical since it adds up the already recursively added up file sizes
+ * Even if running as Aministrator or NT AUTHORITY/SYSTEM some directories may not be included due to unauthorized access exceptions
 
 Acknowledgements
 ----------------
